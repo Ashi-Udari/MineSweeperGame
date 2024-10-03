@@ -1,0 +1,33 @@
+package org.minesweeper.ui;
+
+import org.minesweeper.exception.InvalidCellSelectionException;
+
+public class InputParser {
+
+    public static int[] parseCellSelection(String input, int gridSize) throws InvalidCellSelectionException {
+        if (input == null || input.isEmpty() || input.length() < 2) {
+            throw new InvalidCellSelectionException("Invalid input format. Please enter a valid cell (e.g., A1).");
+        }
+
+        // Extract row and column from input
+        char rowChar = input.charAt(0);
+        if (rowChar < 'A' || rowChar >= ('A' + gridSize)) {
+            throw new InvalidCellSelectionException("Invalid row selection. Please select a valid row.");
+        }
+
+        int row = rowChar - 'A';
+        int col;
+        try {
+            col = Integer.parseInt(input.substring(1)) - 1;
+        } catch (NumberFormatException e) {
+            throw new InvalidCellSelectionException("Invalid column selection. Please select a valid column.");
+        }
+
+        if (col < 0 || col >= gridSize) {
+            throw new InvalidCellSelectionException("Invalid column selection. Please select a column within the grid.");
+        }
+
+        return new int[]{row, col};
+    }
+
+}
