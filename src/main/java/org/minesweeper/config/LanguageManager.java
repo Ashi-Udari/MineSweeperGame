@@ -7,19 +7,19 @@ import java.util.ResourceBundle;
 
 public class LanguageManager {
 
-    private ResourceBundle messages;
+    private final ResourceBundle messages;
 
     public LanguageManager(String languageCode) throws InvalidLanguageException {
-        Locale locale = new Locale(languageCode);
-        try {
-            messages = ResourceBundle.getBundle("messages", locale);
-        } catch (Exception e) {
+        if (languageCode == null || (!languageCode.equals("en") && !languageCode.equals("fr"))) {
             throw new InvalidLanguageException("Invalid language code. Please select 'en' for English or 'fr' for French.");
         }
+        Locale locale = new Locale(languageCode);
+        messages = ResourceBundle.getBundle("messages", locale);
     }
 
     public String getMessage(String key) {
         return messages.getString(key);
     }
-
 }
+
+

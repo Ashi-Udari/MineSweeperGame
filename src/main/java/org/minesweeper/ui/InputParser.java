@@ -5,8 +5,12 @@ import org.minesweeper.exception.InvalidCellSelectionException;
 public class InputParser {
 
     public static int[] parseCellSelection(String input, int gridSize) throws InvalidCellSelectionException {
-        if (input == null || input.isEmpty() || input.length() < 2) {
+        if (input == null || input.trim().isEmpty()) {
             throw new InvalidCellSelectionException("Invalid input format. Please enter a valid cell (e.g., A1).");
+        }
+
+        if (input.length() < 2) {
+            throw new InvalidCellSelectionException("Input too short. Please enter a valid cell (e.g., A1).");
         }
 
         // Extract row and column from input

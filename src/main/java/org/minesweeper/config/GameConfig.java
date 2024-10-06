@@ -4,19 +4,26 @@ import org.minesweeper.exception.InvalidGridSizeException;
 import org.minesweeper.exception.InvalidMineCountException;
 
 public class GameConfig {
+    private final Integer gridSize;
+    private final Integer mineCount;
 
-    private final int gridSize;
-    private final int mineCount;
-
-    public GameConfig(int gridSize, int mineCount) throws InvalidGridSizeException, InvalidMineCountException {
-        if (gridSize <= 0) {
-            throw new InvalidGridSizeException("Grid size must be greater than zero.");
-        }
-        if (mineCount <= 0 || mineCount > gridSize * gridSize * 0.35) {
-            throw new InvalidMineCountException("Mine count must be positive and no more than 35% of the grid size.");
-        }
+    public GameConfig(Integer gridSize, Integer mineCount) throws InvalidGridSizeException, InvalidMineCountException {
+        validateGridSize(gridSize);
+        validateMineCount(gridSize, mineCount);
         this.gridSize = gridSize;
         this.mineCount = mineCount;
+    }
+
+    private void validateGridSize(Integer gridSize) throws InvalidGridSizeException {
+        if (gridSize == null || gridSize <= 0) {
+            throw new InvalidGridSizeException("Grid size must be greater than zero and not null.");
+        }
+    }
+
+    private void validateMineCount(Integer gridSize, Integer mineCount) throws InvalidMineCountException {
+        if (mineCount == null || mineCount <= 0 || mineCount > gridSize * gridSize * 0.35) {
+            throw new InvalidMineCountException("Mine count must be positive, not null, and no more than 35% of the grid size.");
+        }
     }
 
     public int getGridSize() {
@@ -26,5 +33,8 @@ public class GameConfig {
     public int getMineCount() {
         return mineCount;
     }
-
 }
+
+
+
+
