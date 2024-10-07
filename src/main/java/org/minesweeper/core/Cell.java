@@ -2,6 +2,8 @@ package org.minesweeper.core;
 
 public class Cell {
 
+    //Cell Model Class
+
     private boolean isMine;
     private boolean isRevealed;
     private int adjacentMines;

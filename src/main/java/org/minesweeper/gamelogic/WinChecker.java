@@ -3,8 +3,6 @@ package org.minesweeper.gamelogic;
 import org.minesweeper.core.Cell;
 import org.minesweeper.core.Grid;
 
-
-
 public class WinChecker {
 
     private final Grid grid;

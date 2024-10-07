@@ -1,6 +1,8 @@
 package org.minesweeper.controller;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.minesweeper.config.GameConfig;
 import org.minesweeper.config.LanguageManager;
 import org.minesweeper.core.Grid;
@@ -14,6 +16,10 @@ import java.util.Scanner;
 
 
 public class MineSweeperGame {
+
+    //Game class
+
+    private static final Logger logger = LogManager.getLogger(MineSweeperGame.class);
 
     private final Grid grid;
     private final MinePlacer minePlacer;
@@ -33,9 +39,14 @@ public class MineSweeperGame {
         this.gameOver = false;
 
         minePlacer.placeMines();  // Place mines when game starts
+        logger.info("Mines placed on the grid.");
+
     }
 
     public void start() {
+
+        logger.info("Starting the Minesweeper game.");
+
         Scanner scanner = new Scanner(System.in);
         System.out.println(langManager.getMessage("game.welcome"));
 
@@ -46,7 +57,6 @@ public class MineSweeperGame {
             try {
                 System.out.println(langManager.getMessage("game.select.cell"));
                 String input = scanner.nextLine().trim();
-
                 if (input.isEmpty()) {
                     throw new InvalidInputException(langManager.getMessage("game.input.error"));
                 }
@@ -58,18 +68,22 @@ public class MineSweeperGame {
 
                 // Reveal selected cell and check for game over
                 if (!cellRevealer.revealCell(row, col)) {
+                    logger.info("User hit a mine at ({}, {}). Game over.", row, col);
                     System.out.println(langManager.getMessage("game.hit.mine"));
                     gameOver = true;
                     gridView.printGrid(true);  // Show all cells including mines
                 } else if (winChecker.isGameWon()) {
+                    logger.info("User has won the game.");
                     System.out.println(langManager.getMessage("game.win"));
                     gameOver = true;
                     gridView.printGrid(true);  // Show the final grid with all revealed cells
                 } else {
+                    logger.debug("User revealed a cell without hitting a mine. Current game state continues.");
                     // Print updated grid with revealed cells
                     gridView.printGrid(false);
                 }
             } catch (InvalidInputException e) {
+                logger.error("Invalid input: {}", e.getMessage());
                 System.out.println(e.getMessage());
             }
 
@@ -94,6 +108,7 @@ public class MineSweeperGame {
             int row = rowChar - 'A';
             return new int[]{row, col};
         } catch (Exception e) {
+            logger.error("Error parsing input '{}': {}", input, e.getMessage());
             throw new InvalidInputException(langManager.getMessage("game.invalid.input"));
         }
     }
@@ -103,137 +118,13 @@ public class MineSweeperGame {
         System.out.println(langManager.getMessage("game.play.again"));
         String input = scanner.nextLine().trim();
         if (input.equalsIgnoreCase("y")) {
+            logger.info("User chose to play again.");
             gameOver = false;
             start();  // Restart the game
+        }
+        else {
+            logger.info("User chose not to play again.");
         }
     }
 }
 
-//public class MineSweeperGame {
-//
-//    private final Grid grid;
-//    private final MinePlacer minePlacer;
-//    private final CellRevealer cellRevealer;
-//    private final WinChecker winChecker;
-//    private final LanguageManager langManager;
-//    private boolean gameOver;
-//
-//    public MineSweeperGame(GameConfig config, LanguageManager langManager) {
-//        this.grid = new Grid(config.getGridSize(), config.getMineCount());
-//        this.minePlacer = new MinePlacer(grid);
-//        this.cellRevealer = new CellRevealer(grid);
-//        this.winChecker = new WinChecker(grid);
-//        this.langManager = langManager;
-//        this.gameOver = false;
-//
-//        minePlacer.placeMines();
-//    }
-//
-//    public void start() {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println(langManager.getMessage("game.welcome"));
-//        printGrid(false);
-//
-//        while (!gameOver) {
-//            try {
-//                System.out.println(langManager.getMessage("game.select.cell"));
-//                String input = scanner.nextLine().trim();
-//                if (input.isEmpty()) {
-//                    throw new InvalidInputException(langManager.getMessage("game.input.error"));
-//                }
-//                String[] inputs = input.split(" ");
-//                if (inputs.length != 2) {
-//                    throw new InvalidInputException(langManager.getMessage("game.invalid.input"));
-//                }
-//                int row = Integer.parseInt(inputs[0]);
-//                int col = Integer.parseInt(inputs[1]);
-//
-//                if (!cellRevealer.isValidSelection(row, col)) {
-//                    throw new InvalidInputException(langManager.getMessage("game.input.range.error"));
-//                }
-//
-//                if (!cellRevealer.revealCell(row, col)) {
-//                    System.out.println(langManager.getMessage("game.hit.mine"));
-//                    gameOver = true;
-//                } else if (winChecker.isGameWon()) {
-//                    System.out.println(langManager.getMessage("game.win"));
-//                    gameOver = true;
-//                }
-//
-//                printGrid(false);
-//            } catch (InvalidInputException | NumberFormatException e) {
-//                System.out.println(langManager.getMessage("game.invalid.input") + e.getMessage());
-//            }
-//
-//            if (gameOver) {
-//                promptReplay(scanner);
-//            }
-//        }
-//        scanner.close();
-//    }
-//
-//    private void printGrid(boolean showMines) {
-//        // Logic to display grid based on game state (revealed, hidden, etc.)
-//    }
-//
-//    private void promptReplay(Scanner scanner) {
-//        System.out.println(langManager.getMessage("game.thanks"));
-//        System.out.println(langManager.getMessage("game.play.again"));
-//        String input = scanner.nextLine().trim();
-//        if (input.equalsIgnoreCase("y")) {
-//            gameOver = false;
-//            start();
-//        }
-//    }
-//}
-
-
-//    private final Grid grid;
-//    private final GridView gridView;
-//    private final LanguageManager languageManager;
-//
-//    public MineSweeperGame(GameConfig config, LanguageManager languageManager) {
-//        this.grid = new Grid(config.getGridSize(), config.getMineCount());
-//        this.gridView = new GridView(languageManager);
-//        this.languageManager = languageManager;
-//    }
-//
-//    public Grid getGrid() {
-//        return grid;
-//    }
-//    public void startGame() {
-//        Scanner scanner = new Scanner(System.in);
-//        System.out.println(languageManager.getMessage("game.welcome"));
-//
-//        while (true) {
-//            gridView.displayGrid(grid);
-//            System.out.println(languageManager.getMessage("game.select.prompt"));
-//            String input = scanner.nextLine();
-//
-//            try {
-//                int[] cell = InputParser.parseCellSelection(input, grid.getSize());
-//                int row = cell[0];
-//                int col = cell[1];
-//
-//                boolean safe = grid.revealCell(row, col);
-//                if (!safe) {
-//                    System.out.println(languageManager.getMessage("game.mine.hit"));
-//                    break;
-//                }
-//
-//                if (checkWinCondition()) {
-//                    System.out.println(languageManager.getMessage("game.congratulations"));
-//                    break;
-//                }
-//            } catch (InvalidCellSelectionException e) {
-//                System.out.println(e.getMessage());
-//            }
-//        }
-//    }
-//
-//    public boolean checkWinCondition() {
-//        // Logic for determining if the player has won the game
-//        return false;
-//    }
-
-//}

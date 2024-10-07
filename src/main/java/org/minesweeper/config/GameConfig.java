@@ -4,6 +4,9 @@ import org.minesweeper.exception.InvalidGridSizeException;
 import org.minesweeper.exception.InvalidMineCountException;
 
 public class GameConfig {
+
+    //Configuration class for game grid size and mines validation
+
     private final Integer gridSize;
     private final Integer mineCount;
 

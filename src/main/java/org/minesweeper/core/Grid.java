@@ -4,6 +4,8 @@ import java.util.Random;
 
 public class Grid {
 
+    //Grid Model Class
+
     private final Cell[][] grid;  // 2D array for storing cells
     private final Integer size;       // Grid size
     private final Integer mineCount;  // Number of mines

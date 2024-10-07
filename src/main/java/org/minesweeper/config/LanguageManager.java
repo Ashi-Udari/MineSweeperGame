@@ -3,9 +3,12 @@ package org.minesweeper.config;
 import org.minesweeper.exception.InvalidLanguageException;
 
 import java.util.Locale;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 public class LanguageManager {
+
+    //Localize the language according to user selection
 
     private final ResourceBundle messages;
 
@@ -18,7 +21,12 @@ public class LanguageManager {
     }
 
     public String getMessage(String key) {
-        return messages.getString(key);
+        try {
+            return messages.getString(key);
+        } catch (MissingResourceException e) {
+            System.err.println("Message key not found: " + key);
+            return "Missing message for key: " + key;
+        }
     }
 }
 
