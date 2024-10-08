@@ -6,6 +6,7 @@ import org.minesweeper.exception.InvalidGridSizeException;
 import org.minesweeper.exception.InvalidMineCountException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.minesweeper.util.GameValidation.MINE_PERCENTAGE;
 
 public class GameConfigTest {
 
@@ -15,13 +16,12 @@ public class GameConfigTest {
         assertEquals(4, config.getGridSize(), "Grid size should be 4");
         assertEquals(2, config.getMineCount(), "Mine count should be 2");
     }
-
     @Test
     void testNullGridSize() {
         InvalidGridSizeException exception = assertThrows(InvalidGridSizeException.class, () -> {
             new GameConfig(null, 2);  // Null grid size
         });
-        assertEquals("Grid size must be greater than zero and not null.", exception.getMessage());
+        assertEquals("Grid size must not be null.", exception.getMessage());
     }
 
     @Test
@@ -29,7 +29,8 @@ public class GameConfigTest {
         InvalidGridSizeException exception = assertThrows(InvalidGridSizeException.class, () -> {
             new GameConfig(0, 2);  // Zero grid size
         });
-        assertEquals("Grid size must be greater than zero and not null.", exception.getMessage());
+        // Update the expected message based on actual validation logic
+        assertEquals("Grid size must be between 2 and 20", exception.getMessage());
     }
 
     @Test
@@ -37,18 +38,18 @@ public class GameConfigTest {
         InvalidMineCountException exception = assertThrows(InvalidMineCountException.class, () -> {
             new GameConfig(4, null);  // Null mine count
         });
-        assertEquals("Mine count must be positive, not null, and no more than 35% of the grid size.", exception.getMessage());
+        assertEquals("Mine count must not be null.", exception.getMessage());
     }
-
     @Test
     void testZeroMineCount() {
         InvalidMineCountException exception = assertThrows(InvalidMineCountException.class, () -> {
             new GameConfig(4, 0);  // Zero mine count
         });
-        assertEquals("Mine count must be positive, not null, and no more than 35% of the grid size.", exception.getMessage());
+
+        // Calculate the maximum allowed mine count for a 4x4 grid
+        int maxMines = (int) (4 * 4 * MINE_PERCENTAGE); // Assuming MINE_PERCENTAGE is set correctly
+        assertEquals("Mine count must be greater than zero and no more than " + maxMines + " for the given grid size.", exception.getMessage());
     }
-
-
-
-
 }
+
+

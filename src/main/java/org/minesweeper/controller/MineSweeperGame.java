@@ -1,6 +1,5 @@
+
 package org.minesweeper.controller;
-
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.minesweeper.config.GameConfig;
@@ -20,36 +19,39 @@ public class MineSweeperGame {
         //Game class
         private static final Logger logger = LogManager.getLogger(MineSweeperGame.class);
 
-        private final LanguageManager langManager;
-        private final GameConfig config;
-        private boolean gameOver;
 
-        // Game components
-        private Grid grid;
-        private MinePlacer minePlacer;
-        private CellRevealer cellRevealer;
-        private WinChecker winChecker;
-        private GridView gridView;
+    private final LanguageManager langManager;
+    private GameConfig config; // Change to allow reinitialization
+    private boolean gameOver;
 
-        public MineSweeperGame(GameConfig config, LanguageManager langManager) {
-            this.langManager = langManager;
-            this.config = config;
-            resetGame(); // Initialize game components
-        }
+    // Game components
+    private Grid grid;
+    private MinePlacer minePlacer;
+    private CellRevealer cellRevealer;
+    private WinChecker winChecker;
+    private GridView gridView;
 
-        private void resetGame() {
-            this.grid = new Grid(config.getGridSize(), config.getMineCount());
-            this.minePlacer = new MinePlacer(grid);
-            this.cellRevealer = new CellRevealer(grid);
-            this.winChecker = new WinChecker(grid);
-            this.gridView = new GridView(grid);
-            this.gameOver = false;
+    public MineSweeperGame(GameConfig config, LanguageManager langManager) {
+        this.langManager = langManager;
+        this.config = config;
+        resetGame(); // Initialize game components
+    }
 
-            minePlacer.placeMines();  // Place mines when the game starts
-            logger.info("Mines placed on the grid.");
-        }
+    private void resetGame() {
+        logger.info("Game is being reset with grid size: {} and mine count: {}", config.getGridSize(), config.getMineCount());
 
-        public void start() {
+        this.grid = new Grid(config.getGridSize(), config.getMineCount());
+        this.minePlacer = new MinePlacer(grid);
+        this.cellRevealer = new CellRevealer(grid);
+        this.winChecker = new WinChecker(grid);
+        this.gridView = new GridView(grid);
+        this.gameOver = false;
+
+        minePlacer.placeMines();  // Place mines when the game starts
+        logger.info("Mines successfully placed on the grid.");
+    }
+
+    public void start() {
             logger.info("Starting the Minesweeper game.");
             Scanner scanner = new Scanner(System.in);
             System.out.println(langManager.getMessage("game.welcome"));
@@ -62,13 +64,17 @@ public class MineSweeperGame {
                     System.out.println(langManager.getMessage("game.select.cell"));
                     String input = scanner.nextLine().trim();
                     if (input.isEmpty()) {
+                        logger.warn("Empty input received from user.");
                         throw new InvalidInputException(langManager.getMessage("game.input.error"));
                     }
+
 
                     // Convert input (e.g., "A1") to grid indices
                     int[] indices = parseInput(input);
                     int row = indices[0];
                     int col = indices[1];
+
+                    logger.debug("User selected cell at row: {}, column: {}", row, col);
 
                     // Reveal the selected cell and check for game over
                     if (!cellRevealer.revealCell(row, col)) {
@@ -95,7 +101,12 @@ public class MineSweeperGame {
                 if (gameOver) {
                     if (promptReplay(scanner)) {
                         resetGame();  // Reset the game for replay
-                        start();      // Restart the game
+                        start();// Restart the game
+
+                    }
+                    else{
+                        logger.info("Game ended by user.");
+                        break;
                     }
                 }
             }
@@ -108,6 +119,7 @@ public class MineSweeperGame {
                 int col = Integer.parseInt(input.substring(1)) - 1;
 
                 if (rowChar < 'A' || rowChar > 'Z' || col < 0 || col >= grid.getSize()) {
+                    logger.warn("Invalid cell selection: {}. Out of range.", input);
                     throw new InvalidInputException(langManager.getMessage("game.input.range.error"));
                 }
 
@@ -123,7 +135,10 @@ public class MineSweeperGame {
         public boolean promptReplay(Scanner scanner) {
             System.out.println(langManager.getMessage("game.play.again"));
             String input = scanner.nextLine().trim();
-            return input.equalsIgnoreCase("y");
+            boolean replay = input.equalsIgnoreCase("y");
+
+            logger.info("Replay option selected: {}", replay ? "Yes" : "No");
+            return replay;
         }
 }
 
