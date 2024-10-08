@@ -29,23 +29,3 @@ class LanguageManagerTest {
 
 
 }
-
-
-
-//public class LanguageManagerTest {
-//
-//    @Test
-//    void testValidLanguage() throws InvalidLanguageException {
-//        LanguageManager manager = new LanguageManager("en");
-//        assertEquals("Welcome to Minesweeper!", manager.getMessage("game.welcome"));
-//    }
-//
-//    @Test
-//    void testInvalidLanguage() {
-//        InvalidLanguageException exception = assertThrows(InvalidLanguageException.class, () -> {
-//            new LanguageManager("xx");  // Invalid language code
-//        });
-//        assertEquals("Invalid language code. Please select 'en' for English or 'fr' for French.", exception.getMessage());
-//    }
-//
-//}
