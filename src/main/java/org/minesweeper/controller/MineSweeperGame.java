@@ -2,6 +2,7 @@
 package org.minesweeper.controller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.minesweeper.Main;
 import org.minesweeper.config.GameConfig;
 import org.minesweeper.config.LanguageManager;
 import org.minesweeper.core.Grid;
@@ -14,7 +15,7 @@ import org.minesweeper.ui.GridView;
 import java.util.Scanner;
 
 
-public class MineSweeperGame {
+public class  MineSweeperGame {
 
         //Game class
         private static final Logger logger = LogManager.getLogger(MineSweeperGame.class);
@@ -100,8 +101,9 @@ public class MineSweeperGame {
                 // After the game ends, ask the user to replay
                 if (gameOver) {
                     if (promptReplay(scanner)) {
-                        resetGame();  // Reset the game for replay
-                        start();// Restart the game
+                        //resetGame();  // Reset the game for replay
+                        //start();// Restart the game
+                        new Main().startGame();
 
                     }
                     else{

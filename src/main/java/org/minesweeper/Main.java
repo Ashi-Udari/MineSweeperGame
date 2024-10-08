@@ -9,10 +9,10 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        startGame();  // Start the game initially
+        new Main().startGame();  // Start the game initially
     }
 
-    private static void startGame() {
+    public void startGame() {
         Scanner scanner = new Scanner(System.in);
         GameInitializer initializer = new GameInitializer();  // Initialize the GameInitializer
 

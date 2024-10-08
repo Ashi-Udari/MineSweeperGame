@@ -48,30 +48,3 @@ class MinePlacerTest {
         }
     }
 }
-
-
-
-//public class MinePlacerTest {
-//
-//    @Test
-//    void testMinePlacement() {
-//        Grid grid = new Grid(4, 2);  // 4x4 grid with 2 mines
-//        MinePlacer placer = new MinePlacer(grid);
-//        placer.placeMines();
-//
-//        int mineCount = 0;
-//
-//        // Count mines placed on the grid
-//        for (int row = 0; row < grid.getSize(); row++) {
-//            for (int col = 0; col < grid.getSize(); col++) {
-//                if (grid.getCell(row, col).isMine()) {
-//                    mineCount++;
-//                }
-//            }
-//        }
-//
-//        assertEquals(2, mineCount, "There should be exactly 2 mines placed on the grid.");
-//    }
-//
-//
-//}

@@ -39,31 +39,3 @@ class WinCheckerTest {
         assertFalse(winChecker.isGameWon(), "The game should not be won if there are unrevealed non-mine cells.");
     }
 }
-
-
-//public class WinCheckerTest {
-//
-//    private Grid grid;
-//    private WinChecker winChecker;
-//
-//    @BeforeEach
-//    void setUp() {
-//        grid = new Grid(4, 2);
-//        winChecker = new WinChecker(grid);
-//    }
-//
-//    @Test
-//    void testWinCondition() {
-//        // Manually reveal all non-mine cells
-//        for (int row = 0; row < grid.getSize(); row++) {
-//            for (int col = 0; col < grid.getSize(); col++) {
-//                if (!grid.getCell(row, col).isMine()) {
-//                    grid.getCell(row, col).reveal();
-//                }
-//            }
-//        }
-//
-//        assertTrue(winChecker.isGameWon(), "The game should be won when all non-mine cells are revealed.");
-//    }
-//
-//}

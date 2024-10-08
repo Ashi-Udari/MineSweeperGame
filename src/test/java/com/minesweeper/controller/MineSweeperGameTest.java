@@ -41,5 +41,4 @@ class MineSweeperGameTest {
         assertEquals(3, validConfig.getMineCount());
     }
 
-    // More comprehensive end-to-end tests would require mocking user input and testing game loops.
 }
