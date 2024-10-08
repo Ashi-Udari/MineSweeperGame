@@ -6,6 +6,8 @@ import org.minesweeper.util.GameValidation;
 
 public class GameConfig {
 
+    //Configuration model class
+
     private final Integer gridSize;
     private final Integer mineCount;
 

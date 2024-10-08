@@ -14,15 +14,14 @@ import org.minesweeper.ui.GridView;
 
 import java.util.Scanner;
 
-
 public class  MineSweeperGame {
 
-        //Game class
-        private static final Logger logger = LogManager.getLogger(MineSweeperGame.class);
+    // Logger for logging game events
+    private static final Logger logger = LogManager.getLogger(MineSweeperGame.class);
 
-
+    // Language manager for localized messages
     private final LanguageManager langManager;
-    private GameConfig config; // Change to allow reinitialization
+    private GameConfig config;
     private boolean gameOver;
 
     // Game components
@@ -32,12 +31,15 @@ public class  MineSweeperGame {
     private WinChecker winChecker;
     private GridView gridView;
 
+    // Constructor initializes game with provided config and language manager
     public MineSweeperGame(GameConfig config, LanguageManager langManager) {
         this.langManager = langManager;
         this.config = config;
         resetGame(); // Initialize game components
     }
 
+
+    // Resets the game state and initializes game components
     private void resetGame() {
         logger.info("Game is being reset with grid size: {} and mine count: {}", config.getGridSize(), config.getMineCount());
 
@@ -52,6 +54,7 @@ public class  MineSweeperGame {
         logger.info("Mines successfully placed on the grid.");
     }
 
+    // Starts the Minesweeper game
     public void start() {
             logger.info("Starting the Minesweeper game.");
             Scanner scanner = new Scanner(System.in);
@@ -60,8 +63,10 @@ public class  MineSweeperGame {
             // Print the initial grid (all hidden)
             gridView.printGrid(false);
 
+        // Game loop
             while (!gameOver) {
                 try {
+                    // Prompt user to select a cell
                     System.out.println(langManager.getMessage("game.select.cell"));
                     String input = scanner.nextLine().trim();
                     if (input.isEmpty()) {

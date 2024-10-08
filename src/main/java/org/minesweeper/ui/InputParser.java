@@ -4,6 +4,7 @@ import org.minesweeper.exception.InvalidCellSelectionException;
 
 public class InputParser {
 
+    // Parses the user's cell selection input and converts it into grid indices
     public static int[] parseCellSelection(String input, int gridSize) throws InvalidCellSelectionException {
         if (input == null || input.trim().isEmpty()) {
             throw new InvalidCellSelectionException("Invalid input format. Please enter a valid cell (e.g., A1).");
@@ -22,6 +23,7 @@ public class InputParser {
         int row = rowChar - 'A';
         int col;
         try {
+            // Subtract 1 to convert to zero-based index
             col = Integer.parseInt(input.substring(1)) - 1;
         } catch (NumberFormatException e) {
             throw new InvalidCellSelectionException("Invalid column selection. Please select a valid column.");
