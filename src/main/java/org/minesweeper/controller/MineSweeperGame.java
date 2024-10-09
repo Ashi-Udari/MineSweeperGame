@@ -21,12 +21,11 @@ public class  MineSweeperGame {
 
     // Language manager for localized messages
     private final LanguageManager langManager;
-    private GameConfig config;
+    private final GameConfig config;
     private boolean gameOver;
 
     // Game components
     private Grid grid;
-    private MinePlacer minePlacer;
     private CellRevealer cellRevealer;
     private WinChecker winChecker;
     private GridView gridView;
@@ -44,7 +43,7 @@ public class  MineSweeperGame {
         logger.info("Game is being reset with grid size: {} and mine count: {}", config.getGridSize(), config.getMineCount());
 
         this.grid = new Grid(config.getGridSize(), config.getMineCount());
-        this.minePlacer = new MinePlacer(grid);
+        MinePlacer minePlacer = new MinePlacer(grid);
         this.cellRevealer = new CellRevealer(grid);
         this.winChecker = new WinChecker(grid);
         this.gridView = new GridView(grid);
@@ -73,7 +72,6 @@ public class  MineSweeperGame {
                         logger.warn("Empty input received from user.");
                         throw new InvalidInputException(langManager.getMessage("game.input.error"));
                     }
-
 
                     // Convert input (e.g., "A1") to grid indices
                     int[] indices = parseInput(input);
@@ -106,14 +104,14 @@ public class  MineSweeperGame {
                 // After the game ends, ask the user to replay
                 if (gameOver) {
                     if (promptReplay(scanner)) {
-                        //resetGame();  // Reset the game for replay
-                        //start();// Restart the game
-                        new Main().startGame();
+                        // Restart the game
+                        Main.startGame();
 
-                    }
-                    else{
+                    }else{
                         logger.info("Game ended by user.");
-                        break;
+                        System.out.println(langManager.getMessage("game.end.thanks"));
+                        System.exit(0);
+                        //break;
                     }
                 }
             }
