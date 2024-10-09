@@ -3,7 +3,6 @@ package org.minesweeper.gamelogic;
 import org.minesweeper.core.Cell;
 import org.minesweeper.core.Grid;
 
-
 public class CellRevealer {
 
     private final Grid grid;

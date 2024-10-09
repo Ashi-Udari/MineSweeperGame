@@ -13,6 +13,12 @@ public class GameValidation {
     private static final int MAX_GRID_SIZE = Integer.parseInt(config.getString("game.grid.size.max"));
     public static final double MINE_PERCENTAGE = Double.parseDouble(config.getString("game.mine.percentage"));
 
+    // Private constructor to prevent instantiation
+    private GameValidation() {
+        throw new UnsupportedOperationException("Utility class");
+    }
+
+
     // Validate the grid size against the defined minimum and maximum limits
     public static void validateGridSize(Integer gridSize) throws InvalidGridSizeException {
         if (gridSize == null) {

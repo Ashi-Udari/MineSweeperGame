@@ -1,7 +1,5 @@
 package org.minesweeper.core;
 
-import java.util.Random;
-
 public class Grid {
 
     //Grid Model Class
