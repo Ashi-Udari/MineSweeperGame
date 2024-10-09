@@ -6,7 +6,7 @@ import org.minesweeper.ui.InputParser;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-public class InputParserTest {
+class InputParserTest {
 
     @Test
     void testValidCellSelection() throws InvalidCellSelectionException {

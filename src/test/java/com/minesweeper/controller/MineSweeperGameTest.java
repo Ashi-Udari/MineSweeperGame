@@ -6,11 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.minesweeper.config.GameConfig;
 import org.minesweeper.config.LanguageManager;
 import org.minesweeper.controller.MineSweeperGame;
-import org.minesweeper.core.Grid;
 import org.minesweeper.exception.InvalidGridSizeException;
 import org.minesweeper.exception.InvalidLanguageException;
 import org.minesweeper.exception.InvalidMineCountException;
-import org.minesweeper.gamelogic.WinChecker;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,7 +16,6 @@ class MineSweeperGameTest {
 
     private GameConfig config;
     private LanguageManager langManager;
-    private MineSweeperGame game;
 
 
     @BeforeEach
